@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="Lab of Principles and Applications of VPN">
+		<meta name="author" content="Hou, Chun-Chin & Lin, I-Chieh ">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Font -->
+        <style>
+            body{
+                font-family: "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;
+            }
+        </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+		<title>Lab of Principles and Applications of VPN</title>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+            <div class="slides">
+                <section>
+                    <h1>VPN原理及應用LAB</h1>
+                    <h3>資訊及網路安全</h3>
+                    <p>
+                        <small>Create by 侯均靜 & 林倚婕</small>
+                    </p>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Story</h2>
+                        <p>
+                            <br>
+                            不知道大家知不知道這幾款遊戲？ <br>
+                            <br>
+                            <span style="color: yellow">艦隊これくしょん-艦これ-</span><br>
+                            <span style="color: yellow">刀剣乱舞-ONLINE-</span><br>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Story (Cont.)</h2>
+                        <br>
+                        <p>這兩款遊戲有個共通點：限定日本IP</p>
+                        <br>
+                        <p class="fragment">想玩，只好翻牆了_(:3 」∠ )_</p>
+                    </section>
+                </section>
+
+				<section>
+					<section>
+                        <h2>VPN</h2>
+                        <br>
+                        <p>
+                            <span style="color: red">V</span>irtual <span style="color: red">P</span>rivate <span style="color: red">N</span>etwork
+                            <br>
+                            <br>
+                            VPN extends a private network across a public network.
+                        </p>
+                    </section>
+                    <section>
+                        <h2>VPN Connective Overview</h2>
+                        <img src="img/VPN_overview.png">
+                    </section>
+                    <section>
+                        <h2>Usage</h2>
+                        <br>
+                        <ul>
+                            <li class="fragment">Connect to a computer in private nework</li>
+                            <li class="fragment">Avoid tapping</li>
+                            <li class="fragment">Internet censorship circumvention</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Protocols</h2>
+                        <br>
+                        <ul>
+                            <li>PPTP</li>
+                            <li>L2TP/IPSec</li>
+                            <li class="fragment highlight-red grow">OpenVPN</li>
+                            <li>...etc</li>
+                        </ul>
+                    </section>
+				</section>
+
+                <section>
+                    <section>
+                        <h2>PPTP</h2>
+                        <p>Point to Point Tunneling Protocol</p>
+                        <p>No Encryption, No Authentication in PPTP</p>
+                    </section>
+                    <section>
+                        <h2>L2TP</h2>
+                        <p>Layer Two Tunneling Protocol with IPSec</p>
+                        <p>No Encryption, No Authentication in L2TP</p>
+                        <p>Often used with IPSec for Encryption</p>
+                    </section>
+                    <section>
+                        <h2>OpenVPN</h2>
+                        <p>Free, OpenSource</p>
+                        <p>Use OpenSSL for Encryption and Authentication</p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>OpenVPN Install</h2>
+                        <br>
+                        <br>
+                        <ul>
+                            <li>1 CPU Core, 1 GB RAM</li>
+                            <li>Arch Linux / Kernel 4.1.5 (x64)</li>
+                            <li>@ Tokyo, Japan</li>
+                            <li>#Linode VPS</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Step 1 - Install package</h2>
+                        <br>
+                        <pre><code class="zsh">
+        pacman -S openvpn easy-rsa
+                        </code></pre>
+						<br>
+						<br>
+						<br>
+                        <p>
+                            <small><em>For Debian/Ubuntu, use "apt-get" instead.</em></small>
+                            <br>
+                            <small><em>For Fedora/CentOS/RadHat Series, use "yum" instead.</em></small>
+                            <br>
+                            <small><em>For Gentoo, use "emerge" instead.</em></small>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Step 2 - Copy easy-rsa configure</h2>
+                        <br>
+                        <pre><code class="zsh">
+        cp -R /usr/share/easy-rsa /etc/openvpn/easy-rsa
+                        </code></pre>
+                        <br>
+                        <br>
+                        <br>
+                        <small><em>The "share" word is used because what is under /usr/share is platform independent, and can be shared among several machines across a network filesystem. Therefore this is the place for manuals, documentations, examples etc.</em></small>
+                    </section>
+                    <section>
+                        <h2>Step 3 - Config easy-rsa</h2>
+                        <br>
+                        <pre>
+                            <code class="zsh">
+        cd /etc/openvpn/easy-rsa
+        vim ./vars
+                            </code>
+                        </pre>
+                        <br>
+                        <br>
+                        <small><em>
+                            You need to set these configure below: <br>
+                            KEY_COUNTRY、KEY_PROVINCE、KEY_CITY、KEY_ORG、KEY_EMAIL
+                        </em></small>
+                    </section>
+                    <section>
+                        <h2>Step 4 - Apply configure</h2>
+                        <br>
+                        <br>
+                        <pre><code class="zsh">
+        source ./vars
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Step 5 - Generate CA Certificate</h2>
+                        <br>
+                        <br>
+                        <pre><code class="zsh">
+        ./build-ca
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Step 6 - Generate Server Private Key & Certificate</h2>
+                        <br>
+                        <br>
+                        <pre><code class="zsh">
+        ./build-key-server &lt;server-name&gt;
+                        </code></pre>
+                        <br>
+                        <br>
+                        <small><em>Replace &lt;server-name&gt; into your server name. </em></small>
+                    </section>
+                    <section>
+                        <h2>Step 7 - Generate HMAC Key and dhparam</h2>
+                        <br>
+                        <br>
+                        <pre><code class="zsh">
+        openssl --genkey --secret ta.key
+        openssl dhparam -outform PEM -out dh.pem 2048
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Step 8 - Generate Client Certificate</h2>
+                        <br>
+                        <br>
+                        <pre><code class="zsh">
+        ./build-key &lt;client-name&gt;
+                        </code></pre>
+                        <br>
+                        <br>
+                        <small><em>Replace &lt;client-name&gt; into your client name.(Client name is unique!) </em></small>
+                    </section>
+                    <section>
+                        <h2>Step 9 - Generate OpenVPN File</h2>
+                        <br>
+                        <br>
+                        <pre>
+                            <code class="zsh">
+        cp /usr/share/openvpn/examples/client.conf ~/client.ovpn
+        vim ~/client.ovpn
+                        </code></pre>
+                        <br>
+                        <br>
+                        <small><em>For example, like <a href="#">this</a>.</em></small>
+                    </section>
+                    <section>
+                        <h2>Step 9 - Generate OpenVPN File</h2>
+                        <br>
+                        <br>
+                        <pre><code class="zsh">
+        echo "&lt;ca&gt;" >> ~/client.ovpn
+        cat ca.crt >> ~/client.ovpn
+        echo "&lt;/ca&gt;" >> ~/client.ovpn
+
+        echo "&lt;cert&gt;" >> ~/client.ovpn
+        cat client-cert.crt >> ~/client.ovpn
+        echo "&lt;/cert&gt;" >> ~/client.ovpn
+
+        echo "&lt;key&gt;" >> ~/client.ovpn
+        cat client-key.key >> ~/client.ovpn
+        echo "&lt;/key&gt;" >> ~/client.ovpn
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Final - Put ovpn into client</h2>
+                        <br>
+                        <br>
+                        <small><em>Maybe use scp, sftp or anything you want.</em></small>
+                    </section>
+                </section>
+				<section>
+					<section>
+						<h2>Install Client</h2>
+						<br>
+						<br>
+						<p>For Windows: <a href="https://openvpn.net/index.php/open-source/downloads.html">OpenVPN (2.3.9)</a></p>
+						<p>For Mac OS X: <a href="https://tunnelblick.net/downloads.html">Tunnelblick (3.5.5)</a></p>
+						<p>For Linux: Install openvpn</p>
+					</section>
+					<section>
+						<h2>Mac OSX/Windows</h2>
+						<br>
+						<br>
+						<p>Double-click on your .ovpn file and connect.</p>
+					</section>
+					<section>
+						<h2>Linux/Unix</h2>
+						<br>
+						<br>
+						<pre><code class="zsh">
+        openvpn --config "&lt;opvn-filename&gt;"
+                        </code></pre>
+					</section>
+				</section>
+                <section>
+                    <section>
+                        <h2>Attack</h2>
+                    </section>
+                    <section>
+                        <h2>CVE-2014-8104</h2>
+                        <br>
+                        <p>
+                            OpenVPN 2.x before 2.0.11, 2.1.x, 2.2.x before 2.2.3, and 2.3.x before 2.3.6 allows remote authenticated users to cause a denial of service (server crash) via a small control channel packet.
+                        </p>
+                    </section>
+                    <section>
+                        <h2>CVE-2014-0160</h2>
+                        <br>
+                        <p>
+                            The TLS and DTLS implementations in OpenSSL 1.0.1 before 1.0.1g do not properly handle Heartbeat Extension packets, which allows remote attackers to obtain sensitive information from process memory via crafted packets that trigger a buffer over-read, as demonstrated by reading private keys, related to d1_both.c and t1_lib.c, aka the Heartbleed bug.
+                        </p>
+                    </section>
+                </section>
+                <section>
+                    <h2>Feedback</h2>
+                </section>
+                <section>
+                    <section>
+                        <h2>Question</h2>
+                        <br>
+                        <br>
+                        <p>That might be not very hard......</p>
+                    </section>
+                    <section>
+                        <h2>Peaceful</h2>
+                        <br>
+                        <p>
+                            Q: OpenVPN可以運作在哪些系統上？<br>
+                            <small class="fragment">任何作業系統，只要支援TAP/TUN。</small>
+                        </p>
+                        <p>Q: OpenVPN的運作依賴哪個加密系統？<br>
+                            <small class="fragment">公開金鑰加密系統</small>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Normal</h2>
+                        <br>
+                        <p>
+                            Q: OpenVPN的客戶端需要哪些金鑰、憑證，為什麼？<br>
+                            <small class="fragment">ca.pem、client.pem、client.key</small>
+                        </p>
+                        <p>
+                            Q: 詳述剛剛生成的ta.key、dh.pem分別有什麼功用？<br>
+                            <small class="fragment">ta.key for auth、dh.pem for encrypt</small>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Hard</h2>
+                        <br>
+                        <p>
+                            Q: OpenVPN的什麼特點讓它成為IPSec的理想替代？
+                            <small class="fragment">OpenVPN使用TCP、UDP。</small>
+                        </p>
+                        <p>
+                            Q: 和OpenVPN能達成相似效果的還有Proxy、SSH Tunnel，請比較他們。
+                            <small class="fragment"></small>
+                        </p>
+                    </section>
+                </section>
+                <section>
+                    <h2>Reference</h2>
+                    <ul>
+                        <li>http://devco.re/blog/2014/04/09/openssl-heartbleed-CVE-2014-0160/</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Q & A</h2>
+                </section>
+                <section>
+                    <h2>The End</h2>
+                </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
